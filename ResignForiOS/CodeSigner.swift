@@ -226,6 +226,13 @@ class CodeSigner: NSObject {
             //MARK: Codesigning - App
             let signableExts = ["dylib","so","0","vis","pvr","framework","appex","app"]
             recursiveDirectorySearch(appFilePath, extensions: signableExts) { file  in
+                if file.hasSuffix("appex") {
+                    let extensionProvisioningPath = file.appendPathComponent("embedded.mobileprovision")
+                    guard let _ = checkProfilePath(provisioningFile, extensionProvisioningPath) else {
+                        delegate?.codeSignError(errDes: "Creat Extension Profile fail", tempDir: tempFolder)
+                        return
+                    }
+                }
                 codeSign(file, certificate: signingCertificate, entitlements: entitlementsPlist)
             }
             codeSign(appFilePath, certificate: signingCertificate, entitlements: entitlementsPlist)
