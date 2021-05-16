@@ -131,6 +131,7 @@ class MainSignView: NSView {
             NSApplication.shared.terminate(self)
         }
         setStatus("check XCode Task over")
+        
     }
     
     
@@ -152,7 +153,7 @@ class MainSignView: NSView {
             showCodesignCertsErrorAlert()
             return
         }        
-        codesigningCerts = securityResult.output.split(separator: "\"").map{String($0)}.filter({ $0.contains("iPhone")})
+        codesigningCerts = securityResult.output.split(separator: "\"").map{String($0)}.filter({ $0.contains("iPhone") || $0.contains("Apple")})
         for cert in self.codesigningCerts {
             codeSignCertsPop.addItem(withTitle: cert)
         }
